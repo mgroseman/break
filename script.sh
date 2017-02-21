@@ -20,19 +20,26 @@ touch $TMP/.lock
  CNF=/etc/my.cnf
  backup $CNF
  sed -e '/^\[mysqld\]/,/^\[/ {/port/s/3306/3007/g}' $CNF > $CNF
- mv $CNF $CNF.change304323
- service mysql stop
+ mv $CNF $CNF.chg.992348
+ cat << EOF > $CNF
+ [mysqld]
+ datadir = /var/lib/mySQL
+EOF
  service mysqld stop
 
-# postifx
-
+# postfix
  PF=/usr/sbin/postfix
  backup $PF
  mv $PF $TMP/postfix.backup2
 
 #iptable rule
+backup /etc/sysconfig/iptables
 iptables -I INPUT 1 -p tcp --dport 80 -j REJECT
 iptables -I INPUT 1 -p tcp --dport 80 -j LOG --log-prefix "Denied TCP: "
+
+#www
+ls -lad /var/www/html > $TMP/www_html.perm
+chmod 000 /var/www/html
 
 #Delete myself
 rm -f script.sh
