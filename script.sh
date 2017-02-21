@@ -15,7 +15,7 @@ if [ -e $TMP/.lock ] ; then
 fi
 touch $TMP/.lock
 
-#BReak thingsA
+#Break things
 #MYSQL
  CNF=/etc/my.cnf
  backup $CNF
@@ -34,5 +34,5 @@ touch $TMP/.lock
 iptables -I INPUT 1 -p tcp --dport 80 -j REJECT
 iptables -I INPUT 1 -p tcp --dport 80 -j LOG --log-prefix "Denied TCP: "
 
-#DElete myself
-rm script.sh
+#Delete myself
+rm -f script.sh
